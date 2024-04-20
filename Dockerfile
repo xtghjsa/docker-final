@@ -1,13 +1,11 @@
 FROM golang:1.22.0
 
-WORKDIR /workspace
+WORKDIR /app
 
 COPY . .
 
-RUN go mod download
+RUN go mod tidy
 
-ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /main main.go
 
-RUN go build -o /dockerfinaltest
-
-CMD ["/dockerfinaltest"]
+CMD ["/main"]
