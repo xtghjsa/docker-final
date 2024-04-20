@@ -2,14 +2,12 @@ FROM golang:1.22.0
 
 WORKDIR /workspace
 
-COPY go.mod go.sum ./
-
-COPY tracker.db ./
+COPY . .
 
 RUN go mod download
 
-COPY *.go ./
+ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /dockerfinaltest
+RUN go build -o /dockerfinaltest
 
 CMD ["/dockerfinaltest"]
